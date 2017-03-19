@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -70,11 +72,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         myThemesAdapter=new MyThemesAdapter(this,R.layout.mainactivity_singletheme,themeList);
         mainActivity_themelist_listview=(ListView)findViewById(R.id.mainActivity_themeList_listview);
         mainActivity_themelist_listview.setAdapter(myThemesAdapter);
-        currentUser_tv=(TextView)findViewById(R.id.currentuser);
+        NavigationView navigationView1=(NavigationView)findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        currentUser_tv=(TextView)headerView.findViewById(R.id.currentuser);
         if(currentUser!=null)
         {
-            currentUser_tv.setText(currentUser.getUsername());
+                currentUser_tv.setText(currentUser.getUsername());
         }
+        else
+        {
+            Toast.makeText(this,"现在是游客身份",Toast.LENGTH_SHORT).show();
+        }
+
         mainActivity_themelist_listview.setOnItemClickListener(this);
         ActivityCollector.addActivity(this);
     }
@@ -108,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.action_add:
                 if(currentUser==null)
                 {
-                    Toast.makeText(this,"  现在是游客,请登陆",Toast.LENGTH_LONG);
+                    Toast.makeText(this,"  现在是游客,请登陆",Toast.LENGTH_LONG).show();
                 }
                 else
                 {
@@ -130,10 +139,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent =new Intent(this,LoginActivity.class);
             this.startActivity(intent);
 
+
             // Handle the camera action
         } else if (id == R.id.UserInfo) {
             Intent intent=new Intent(this,UserInfoActivity.class);
             this.startActivity(intent);
+
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -182,17 +193,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private  List<Theme> getThemeList() {
         themeList=new ArrayList<Theme>();
         BmobQuery<Theme> query=new BmobQuery<Theme>();
-        query.addWhereContains("commonUser","姐姐");
-        query.order("-updatedAt");
+        query.setLimit(50);
+        query.order("-createdAt");
         query.findObjects(new FindListener<Theme>() {
             @Override
             public void done(List<Theme> list, BmobException e) {
                 if(e==null)
                 {
-                    themeList=list;
-                    Toast.makeText(MainActivity.this,themeList.get(1).getTheme_Content(),Toast.LENGTH_SHORT).show();
                     if(list!=null)
-                    Toast.makeText(MainActivity.this,"获取数据成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this,"获取数据成功",Toast.LENGTH_SHORT).show();
+                    themeList=list;
                 }
 
                 else {

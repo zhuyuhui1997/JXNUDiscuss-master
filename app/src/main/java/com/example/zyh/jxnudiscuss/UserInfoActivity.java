@@ -43,7 +43,7 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
         }
         else
         {
-            Toast.makeText(this,"请登陆",Toast.LENGTH_LONG);
+            Toast.makeText(this,"请登陆",Toast.LENGTH_LONG).show();
             finish();
         }
 

@@ -2,6 +2,7 @@ package com.example.zyh.jxnudiscuss;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +41,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
         register_btn = (Button) findViewById(R.id.loginActivity_register_btn);
         login_btn.setOnClickListener(this);
         register_btn.setOnClickListener(this);
+        logout_btn.setOnClickListener(this);
 
     }
 
@@ -83,6 +85,9 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
                     public void done(CommonUser commonUser, BmobException e) {
                         if (e == null) {
                             Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG).show();
+                            Intent  intent=new Intent(LoginActivity.this,MainActivity.class);
+                            startActivity(intent);
+
                         } else {
                             Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_LONG).show();
                         }
@@ -93,16 +98,20 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
                 });
                 break;
             case R.id.logout_btn:
-                BmobUser.logOut();
                 CommonUser commonUser=BmobUser.getCurrentUser(CommonUser.class);
+                commonUser.logOut();
+
                 if (commonUser==null)
                 {
                     Toast.makeText(this,"退出登录成功, 现在是游客",Toast.LENGTH_SHORT).show();
+                    Intent  intent=new Intent(LoginActivity.this,MainActivity.class);
+                    startActivity(intent);
                 }
                 else
                 {
                     Toast.makeText(this,"退出登录失败,出现网络问题",Toast.LENGTH_SHORT).show();
                 }
+                break;
         }
     }
 }
