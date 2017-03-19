@@ -1,0 +1,59 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户名" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="请输入你的用户名"
+            android:id="@+id/loginActivity_username_tv_edit"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="密码:"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:id="@+id/loginActivity_userpasswd_edit"/>
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginActivity_login_btn"
+            android:text="登录" />
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/loginActivity_register_btn"
+            android:text="注册"/>
+    </TableRow>
+    <TableRow>
+        <Button
+            android:id="@+id/logout_btn"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="退出登录"
+            android:gravity="center"/>
+    </TableRow>
+</TableLayout>

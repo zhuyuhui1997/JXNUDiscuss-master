@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">JXNUDiscuss</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="refresh">刷新</string>
+    <string name="add">添加主题</string>
+    <string name="quit">退出</string>
+
+
+    </resources>
