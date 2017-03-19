@@ -56,13 +56,13 @@ public class MyCommentAdapter extends BaseAdapter {
         else{
             viewHolder=(ViewHolder)convertView.getTag();
         }
-        viewHolder.comment_name.setText(commentList.get(position).getUser_name()+":");
+        viewHolder.comment_name.setText(commentList.get(position).getCommonUser().getUsername()+":");
         viewHolder.comment_content.setText(commentList.get(position).getContent());
 
         return  convertView;
     }
 
-    public  void addcomment(final Comment comment)
+    public  void addcomment( Comment comment)
     {
         commentList.add(comment);
         comment.save(new SaveListener<String>() {
@@ -71,11 +71,18 @@ public class MyCommentAdapter extends BaseAdapter {
                 if (e==null)
                 {
                     Toast.makeText(context,"评论成功",Toast.LENGTH_SHORT).show();
+                    notifyDataSetChanged();
+
+                }
+                else {
+                    Toast.makeText(context,"网络原因，评论失败",Toast.LENGTH_SHORT).show();
+                    commentList.remove(commentList.size()-1);
+                    notifyDataSetChanged();
                 }
             }
         });
 
-        notifyDataSetChanged();
+
     }
 
     static class ViewHolder{

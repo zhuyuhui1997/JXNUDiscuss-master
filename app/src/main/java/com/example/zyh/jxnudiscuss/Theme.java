@@ -11,7 +11,7 @@ import cn.bmob.v3.BmobObject;
 public class Theme  extends BmobObject{
     private  String Theme_Title;
     private  String Theme_Content;
-    private List<Comment>    commentList;
+    private  List<Comment>    commentList;
     private   CommonUser commonUser;
 
 

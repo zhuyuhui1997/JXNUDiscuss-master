@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -39,13 +40,17 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener ,AdapterView.OnItemClickListener {
-    public static Context context;
+    public   static Context context;
     private  static  int RequestCodeToNewThemeActivity=1;
-    private ListView mainActivity_themelist_listview;
-    private List<Theme> themeList;
+    private  ListView mainActivity_themelist_listview;
+    private  List<Theme> themeList;
     private  MyThemesAdapter myThemesAdapter;
-    public static CommonUser currentUser;
-    private   TextView   currentUser_tv;
+    public   static CommonUser currentUser;
+    private  TextView   currentUser_tv;
+    private  ImageView imageView;
+    private   NavigationView navigationView;
+    private  CommonUser superman;
+
 
 
     @Override
@@ -72,18 +77,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         myThemesAdapter=new MyThemesAdapter(this,R.layout.mainactivity_singletheme,themeList);
         mainActivity_themelist_listview=(ListView)findViewById(R.id.mainActivity_themeList_listview);
         mainActivity_themelist_listview.setAdapter(myThemesAdapter);
-        NavigationView navigationView1=(NavigationView)findViewById(R.id.nav_view);
+        navigationView=(NavigationView)findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         currentUser_tv=(TextView)headerView.findViewById(R.id.currentuser);
+        imageView=(ImageView)headerView.findViewById(R.id.imageView);
+        imageView.setImageResource(R.drawable.youke);
         if(currentUser!=null)
         {
-                currentUser_tv.setText(currentUser.getUsername());
+            currentUser_tv.setText(currentUser.getUsername());
+            if(currentUser.getSex().equals("boy"))
+            {
+                imageView.setImageResource(R.drawable.xiaozhi_boy);
+            }
+            if (currentUser.getSex().equals("girl"))
+            {
+                imageView.setImageResource(R.drawable.meizi);
+            }
         }
         else
         {
             Toast.makeText(this,"现在是游客身份",Toast.LENGTH_SHORT).show();
         }
-
         mainActivity_themelist_listview.setOnItemClickListener(this);
         ActivityCollector.addActivity(this);
     }
@@ -117,13 +131,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.action_add:
                 if(currentUser==null)
                 {
-                    Toast.makeText(this,"  现在是游客,请登陆",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,"  现在是游客,请登陆",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
                     Intent intent=new Intent(this,NewThemeActivity.class);
                     startActivityForResult(intent,RequestCodeToNewThemeActivity);break;
                 }
+            case R.id.action_refresh:
+                Toast.makeText(this,"开始与服务器同步",Toast.LENGTH_SHORT).show();
+                BmobQuery<Theme>  query=new BmobQuery<Theme>();
+                query.setLimit(50);
+                query.order("-createdAt");
+                query.findObjects(new FindListener<Theme>() {
+                    @Override
+                    public void done(List<Theme> list, BmobException e) {
+                            for(Theme theme :list)
+                            {
+                                Toast.makeText(MainActivity.this,theme.getObjectId()+"",Toast.LENGTH_SHORT).show();
+                            }
+                    }
+                });
 
         }
         return  true;
@@ -188,28 +216,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Theme theme=themeList.get(position);
-        ThemeActivity.actionStart(this,theme.getTheme_Title(),theme.getTheme_Content(),theme);
+        ThemeActivity.actionStart(this,theme);
     }
     private  List<Theme> getThemeList() {
-        themeList=new ArrayList<Theme>();
-        BmobQuery<Theme> query=new BmobQuery<Theme>();
-        query.setLimit(50);
-        query.order("-createdAt");
-        query.findObjects(new FindListener<Theme>() {
-            @Override
-            public void done(List<Theme> list, BmobException e) {
-                if(e==null)
-                {
-                    if(list!=null)
-                        Toast.makeText(MainActivity.this,"获取数据成功",Toast.LENGTH_SHORT).show();
-                    themeList=list;
-                }
 
-                else {
-                    Toast.makeText(MainActivity.this,"获取数据失败",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        themeList=new ArrayList<Theme>();
+        Theme  theme=new Theme();
+        theme.setTheme_Title("你好，朋友");
+        theme.setTheme_Content("朋友，欢迎来到这个社区，这是一个公益免费的社区，这里可以发布公益活动，也" +
+                "可以发布寻物启事等等，希望大家能在这个社区和谐愉快的活动");
+        themeList.add(theme);
         return themeList;
     }
     public  void addTheme(Theme theme)

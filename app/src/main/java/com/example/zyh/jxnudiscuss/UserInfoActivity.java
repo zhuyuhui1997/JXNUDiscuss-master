@@ -2,6 +2,7 @@ package com.example.zyh.jxnudiscuss;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -61,6 +62,8 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
                      if(e==null){
                          Log.i("bmob","更新成功");
                          Toast.makeText(getBaseContext(), "更新成功", Toast.LENGTH_SHORT).show();
+                         Intent intent=new Intent(UserInfoActivity.this,MainActivity.class);
+                         startActivity(intent);
                      }else{
                          Log.i("bmob","更新失败："+e.getMessage()+","+e.getErrorCode());
                          Toast.makeText(getBaseContext(), "更新失败", Toast.LENGTH_SHORT).show();

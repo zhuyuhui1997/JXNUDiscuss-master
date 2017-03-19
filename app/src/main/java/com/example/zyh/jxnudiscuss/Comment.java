@@ -10,16 +10,15 @@ import cn.bmob.v3.BmobObject;
 
 public class Comment extends BmobObject{
     private  String comment_content;
-    private  String user_name;
-    private  Theme theme;
-    private   CommonUser commonUser;
+    private  Theme  theme;
+    private  CommonUser commonUser;
 
 
 
-    public  Comment(String comment_content,String user_name)
+    public  Comment(String comment_content,CommonUser commonUser)
     {
         this.comment_content=comment_content;
-        this.user_name=user_name;
+        this.commonUser=commonUser;
     }
     public String getContent() {
         return comment_content;
@@ -27,14 +26,6 @@ public class Comment extends BmobObject{
 
     public void setContent(String comment_content) {
         this.comment_content = comment_content;
-    }
-
-    public String getUser_name() {
-        return user_name;
-    }
-
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
     }
 
     public Theme getTheme() {

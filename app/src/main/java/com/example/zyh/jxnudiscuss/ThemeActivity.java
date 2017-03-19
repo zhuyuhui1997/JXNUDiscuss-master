@@ -28,8 +28,8 @@ public class ThemeActivity extends Activity {
     private EditText themeActivity_comment_content_edit;
     private Button themeActivity_send_comment_btn;
     private  MyCommentAdapter myCommentAdapter;
-    private  static Theme theme;
     private  CommonUser commonUser;
+    private   static Theme  theme;
     private  TextView themeActivity_theme_title_tv;
     private  TextView  themeActivity_theme_content_tv;
     private   TextView  themeActivity_theme_user_tv;
@@ -46,14 +46,16 @@ public class ThemeActivity extends Activity {
         init();
         String Theme_title=getIntent().getStringExtra("theme_title");
         String Theme_content=getIntent().getStringExtra("theme_content");
+        String Theme_time=getIntent().getStringExtra("theme_time");
+        String  Theme_user=getIntent().getStringExtra("theme_user");
         themeActivity_theme_time_tv=(TextView)findViewById(R.id.themeActivity_theme_time);
         themeActivity_theme_user_tv=(TextView)findViewById(R.id.themeActivity_theme_user);
         themeActivity_theme_title_tv=(TextView)findViewById(R.id.themeActivity_theme_title_tv);
         themeActivity_theme_content_tv=(TextView)findViewById(R.id.themeActivity_theme_content_tv);
         themeActivity_theme_title_tv.setText(Theme_title);
         themeActivity_theme_content_tv.setText(Theme_content);
-        themeActivity_theme_user_tv.setText(theme.getCommonUser().getUsername());
-        themeActivity_theme_time_tv.setText(theme.getCreatedAt());
+        themeActivity_theme_user_tv.setText(Theme_user);
+        themeActivity_theme_time_tv.setText(Theme_time);
         ActivityCollector.addActivity(this);
         themeActivity_send_comment_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,28 +82,41 @@ public class ThemeActivity extends Activity {
     }
     public  void sendComment()
     {
-        if(themeActivity_comment_content_edit.getText().toString().equals(""))
+        if(commonUser==null)
         {
-            Toast.makeText(this,"空的回复",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"请登陆再回复帖子",Toast.LENGTH_SHORT).show();
         }
-
-        else{
-            Comment comment=new Comment(themeActivity_comment_content_edit.getText().toString(),commonUser.getUsername());
-            myCommentAdapter.addcomment(comment);
-            themeActivity_comment_content_edit.setText("");
-
+        else {
+            if(themeActivity_comment_content_edit.getText().toString().equals("")) {
+                Toast.makeText(this,"空的回复",Toast.LENGTH_SHORT).show();
             }
-
-
+            else{
+                Comment comment=new Comment(themeActivity_comment_content_edit.getText().toString(),commonUser);
+                comment.setTheme(theme);
+                myCommentAdapter.addcomment(comment);
+                themeActivity_comment_content_edit.setText("");
+            }
         }
+    }
 
 
-    public static void actionStart(Context context,String Theme_title,String Theme_content,Theme theme)
+
+    public static void actionStart(Context context,Theme theme)
     {
         ThemeActivity.theme=theme;
         Intent intent=new Intent(context,ThemeActivity.class);
-        intent.putExtra("theme_title",Theme_title);
-        intent.putExtra("theme_content",Theme_content);
+        intent.putExtra("theme_title",theme.getTheme_Title());
+        intent.putExtra("theme_content",theme.getTheme_Content());
+        intent.putExtra("theme_time",theme.getCreatedAt());
+        if (theme.getCommonUser()==null)
+        {
+            intent.putExtra("theme_user","系统");
+        }
+        else
+        {
+            intent.putExtra("theme_user",theme.getCommonUser().getUsername());
+        }
+
         context.startActivity(intent);
     }
 }

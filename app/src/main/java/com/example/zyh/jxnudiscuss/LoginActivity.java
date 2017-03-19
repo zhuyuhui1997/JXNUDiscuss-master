@@ -85,11 +85,12 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
                     public void done(CommonUser commonUser, BmobException e) {
                         if (e == null) {
                             Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG).show();
+                            finish();
                             Intent  intent=new Intent(LoginActivity.this,MainActivity.class);
                             startActivity(intent);
 
                         } else {
-                            Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "网络问题,登录失败", Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -104,6 +105,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
                 if (commonUser==null)
                 {
                     Toast.makeText(this,"退出登录成功, 现在是游客",Toast.LENGTH_SHORT).show();
+                    finish();
                     Intent  intent=new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);
                 }

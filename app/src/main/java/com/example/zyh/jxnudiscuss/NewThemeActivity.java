@@ -13,28 +13,28 @@ import android.widget.Toast;
  */
 
 public class NewThemeActivity extends Activity {
-    private TextView  themeactiivty_theme_title_tv;
-    private  TextView themeactiivty_theme_content_tv;
-    private Button  themeactivity_theme_commit_btn;
+    private TextView  themeActivity_theme_title_tv;
+    private  TextView themeActivity_theme_content_tv;
+    private Button  themeActivity_theme_commit_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newthemeactivity);
-        themeactiivty_theme_title_tv=(TextView)findViewById(R.id.newthemeactivity_title_edit);
-        themeactiivty_theme_content_tv=(TextView)findViewById(R.id.newthemeactivity_content_edit);
-        themeactivity_theme_commit_btn=(Button) findViewById(R.id.newthemeactivity_theme_commit);
-        themeactivity_theme_commit_btn.setOnClickListener(new View.OnClickListener() {
+        themeActivity_theme_title_tv=(TextView)findViewById(R.id.newthemeactivity_title_edit);
+        themeActivity_theme_content_tv=(TextView)findViewById(R.id.newthemeactivity_content_edit);
+        themeActivity_theme_commit_btn=(Button) findViewById(R.id.newthemeactivity_theme_commit);
+        themeActivity_theme_commit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(themeactiivty_theme_content_tv.getText().toString().length()==0 || themeactiivty_theme_title_tv
+                if(themeActivity_theme_content_tv.getText().toString().length()==0 || themeActivity_theme_title_tv
                         .getText().toString().length()==0)
                 {
                     Toast.makeText(NewThemeActivity.this,"空的标题或内容",Toast.LENGTH_LONG).show();
                 }
                 else{
                     Intent intent =new Intent();
-                    intent.putExtra("title",themeactiivty_theme_title_tv.getText().toString());
-                    intent.putExtra("content",themeactiivty_theme_content_tv.getText().toString());
+                    intent.putExtra("title",themeActivity_theme_title_tv.getText().toString());
+                    intent.putExtra("content",themeActivity_theme_content_tv.getText().toString());
                     setResult(RESULT_OK,intent);
                     finish();
 

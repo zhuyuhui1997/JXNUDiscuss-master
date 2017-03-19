@@ -50,7 +50,7 @@ public class MyThemesAdapter extends ArrayAdapter {
             public void done(String s, BmobException e) {
                 if(e==null)
                 {
-                    Toast.makeText(MainActivity.getContext(),"保存主题成功",Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.getContext(),"保存主题成功",Toast.LENGTH_SHORT).show();
                 }
             }
         });
