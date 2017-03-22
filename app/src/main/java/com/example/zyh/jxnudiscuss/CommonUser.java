@@ -12,9 +12,6 @@ import cn.bmob.v3.BmobUser;
 public class CommonUser extends BmobUser {
     private String age;
     private String sex;
-    private List<Comment>   commentList;
-    private   List<Theme>    themeList;
-
     public String getAge() {
         return age;
     }
@@ -31,19 +28,4 @@ public class CommonUser extends BmobUser {
         this.sex = sex;
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
-    }
-
-    public List<Theme> getThemeList() {
-        return themeList;
-    }
-
-    public void setThemeList(List<Theme> themeList) {
-        this.themeList = themeList;
-    }
 }

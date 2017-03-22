@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private  TextView   currentUser_tv;
     private  ImageView imageView;
     private   NavigationView navigationView;
-    private  CommonUser superman;
+    public  int i=0;
 
 
 
@@ -66,18 +66,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Bmob.initialize(this, "45487cb2ed18cc0e6caa4f65e6288d11");
         BmobInstallation.getCurrentInstallation().save();
-        // 启动推送服务
-        BmobPush.startWork(this);
         themeList=getThemeList();
         currentUser= BmobUser.getCurrentUser(CommonUser.class);
         myThemesAdapter=new MyThemesAdapter(this,R.layout.mainactivity_singletheme,themeList);
         mainActivity_themelist_listview=(ListView)findViewById(R.id.mainActivity_themeList_listview);
         mainActivity_themelist_listview.setAdapter(myThemesAdapter);
-        navigationView=(NavigationView)findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         currentUser_tv=(TextView)headerView.findViewById(R.id.currentuser);
         imageView=(ImageView)headerView.findViewById(R.id.imageView);
@@ -85,18 +82,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(currentUser!=null)
         {
             currentUser_tv.setText(currentUser.getUsername());
-            if(currentUser.getSex().equals("boy"))
+            if (currentUser.getSex()!=null)
             {
-                imageView.setImageResource(R.drawable.xiaozhi_boy);
+                if(currentUser.getSex().equals("boy"))
+                {
+                    imageView.setImageResource(R.drawable.xiaozhi_boy);
+                }
+                if (currentUser.getSex().equals("girl"))
+                {
+                    imageView.setImageResource(R.drawable.meizi);
+                }
             }
-            if (currentUser.getSex().equals("girl"))
-            {
-                imageView.setImageResource(R.drawable.meizi);
-            }
+
         }
         else
         {
-            Toast.makeText(this,"现在是游客身份",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"现在是游客身份,请登陆",Toast.LENGTH_SHORT).show();
         }
         mainActivity_themelist_listview.setOnItemClickListener(this);
         ActivityCollector.addActivity(this);
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.action_add:
                 if(currentUser==null)
                 {
-                    Toast.makeText(this,"  现在是游客,请登陆",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"现在是游客,请登陆",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -140,16 +141,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             case R.id.action_refresh:
                 Toast.makeText(this,"开始与服务器同步",Toast.LENGTH_SHORT).show();
-                BmobQuery<Theme>  query=new BmobQuery<Theme>();
-                query.setLimit(50);
-                query.order("-createdAt");
+                BmobQuery<Theme>  query=new BmobQuery<>();
+                query.setCachePolicy(BmobQuery.CachePolicy.CACHE_THEN_NETWORK);
+                query.include("commonUser");
+                query.setSkip(i);
+                query.setLimit(5);
+                i=i+5;
+                query.order("-updatedAt");
                 query.findObjects(new FindListener<Theme>() {
                     @Override
                     public void done(List<Theme> list, BmobException e) {
-                            for(Theme theme :list)
+                        if (e==null)
+                        {
+                            for(Theme theme:list)
                             {
-                                Toast.makeText(MainActivity.this,theme.getObjectId()+"",Toast.LENGTH_SHORT).show();
+                                myThemesAdapter.addThemes(theme,1);
                             }
+                        }
+
                     }
                 });
 
@@ -174,7 +183,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             this.startActivity(intent);
 
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_phone) {
+            if (currentUser!=null)
+            {
+                Intent intent=new Intent(this,BindPhoneActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else {
+                Toast.makeText(this,"请登陆再绑定",Toast.LENGTH_SHORT).show();
+            }
 
         } else if (id == R.id.nav_manage) {
 
@@ -230,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     public  void addTheme(Theme theme)
     {
-        myThemesAdapter.addThemes(theme);
+        myThemesAdapter.addThemes(theme,0);
     }
 
     }

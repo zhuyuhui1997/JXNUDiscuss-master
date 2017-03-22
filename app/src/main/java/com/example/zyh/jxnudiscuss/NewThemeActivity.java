@@ -29,7 +29,7 @@ public class NewThemeActivity extends Activity {
                 if(themeActivity_theme_content_tv.getText().toString().length()==0 || themeActivity_theme_title_tv
                         .getText().toString().length()==0)
                 {
-                    Toast.makeText(NewThemeActivity.this,"空的标题或内容",Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewThemeActivity.this,"空的标题或内容",Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Intent intent =new Intent();

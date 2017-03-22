@@ -3,6 +3,7 @@ package com.example.zyh.jxnudiscuss;
 import java.util.List;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobRelation;
 
 /**
  * Created by zyh on 17-3-4.
@@ -12,7 +13,8 @@ public class Theme  extends BmobObject{
     private  String Theme_Title;
     private  String Theme_Content;
     private  List<Comment>    commentList;
-    private   CommonUser commonUser;
+    private  CommonUser commonUser;
+    private  BmobRelation  support;
 
 
     public String getTheme_Title() {
@@ -45,5 +47,13 @@ public class Theme  extends BmobObject{
 
     public void setCommonUser(CommonUser commonUser) {
         this.commonUser = commonUser;
+    }
+
+    public BmobRelation getSupport() {
+        return support;
+    }
+
+    public void setSupport(BmobRelation support) {
+        this.support = support;
     }
 }

@@ -42,18 +42,26 @@ public class MyThemesAdapter extends ArrayAdapter {
 
     }
 
-    public  void addThemes(Theme theme)
+    public  void addThemes(Theme theme ,int i)
     {
         themeList.add(theme);
-        theme.save(new SaveListener<String>() {
-            @Override
-            public void done(String s, BmobException e) {
-                if(e==null)
-                {
-                    Toast.makeText(MainActivity.getContext(),"保存主题成功",Toast.LENGTH_SHORT).show();
+        if(i==0)
+        {
+            theme.save(new SaveListener<String>() {
+                @Override
+                public void done(String s, BmobException e) {
+                    if(e==null)
+                    {
+                        Toast.makeText(MainActivity.getContext(),"保存主题成功",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(MainActivity.getContext(),"保存主题失败",Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
+
         notifyDataSetChanged();
     }
 

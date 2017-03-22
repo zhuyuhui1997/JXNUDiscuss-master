@@ -14,8 +14,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -34,6 +38,7 @@ public class ThemeActivity extends Activity {
     private  TextView  themeActivity_theme_content_tv;
     private   TextView  themeActivity_theme_user_tv;
     private   TextView   themeActivity_theme_time_tv;
+    public    static  Comment comment;
 
 
 
@@ -75,6 +80,7 @@ public class ThemeActivity extends Activity {
     {
         themeActivity_commentList_listview=(ListView)findViewById(R.id.thmemActivity_comment_listview);
         commentList=new ArrayList<Comment>();
+        getCommentsFromInternet();
         myCommentAdapter=new MyCommentAdapter(this,commentList);
         themeActivity_commentList_listview.setAdapter(myCommentAdapter);
         themeActivity_send_comment_btn=(Button)findViewById(R.id.themeActivity_comment_send_btn);
@@ -93,7 +99,7 @@ public class ThemeActivity extends Activity {
             else{
                 Comment comment=new Comment(themeActivity_comment_content_edit.getText().toString(),commonUser);
                 comment.setTheme(theme);
-                myCommentAdapter.addcomment(comment);
+                myCommentAdapter.addcomment(comment,0);
                 themeActivity_comment_content_edit.setText("");
             }
         }
@@ -118,5 +124,25 @@ public class ThemeActivity extends Activity {
         }
 
         context.startActivity(intent);
+    }
+
+     public  void getCommentsFromInternet(){
+         BmobQuery<Comment> query=new BmobQuery<>();
+         query.setCachePolicy(BmobQuery.CachePolicy.CACHE_THEN_NETWORK);
+         query.addWhereEqualTo("theme",theme);
+         query.include("commonUser");
+         query.setLimit(100);
+         query.order("createdAt");
+         query.findObjects(new FindListener<Comment>() {
+             @Override
+             public void done(List<Comment> list, BmobException e) {
+                 for (Comment comment:list)
+                 {
+
+                     myCommentAdapter.addcomment(comment,1);
+                 }
+             }
+         });
+
     }
 }

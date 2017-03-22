@@ -15,6 +15,7 @@ public class Comment extends BmobObject{
 
 
 
+
     public  Comment(String comment_content,CommonUser commonUser)
     {
         this.comment_content=comment_content;

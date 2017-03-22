@@ -1,6 +1,7 @@
 package com.example.zyh.jxnudiscuss;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import cn.bmob.v3.listener.SaveListener;
 public class MyCommentAdapter extends BaseAdapter {
     private  Context context;
     private List<Comment>  commentList;
+    public  static  String Tag="MyCommentAdapter";
     public MyCommentAdapter(Context context, List<Comment> commentList) {
         this.context = context;
         this.commentList = commentList;
@@ -56,31 +58,37 @@ public class MyCommentAdapter extends BaseAdapter {
         else{
             viewHolder=(ViewHolder)convertView.getTag();
         }
+
         viewHolder.comment_name.setText(commentList.get(position).getCommonUser().getUsername()+":");
         viewHolder.comment_content.setText(commentList.get(position).getContent());
 
         return  convertView;
     }
 
-    public  void addcomment( Comment comment)
+    public  void addcomment( Comment comment,int i)
     {
         commentList.add(comment);
-        comment.save(new SaveListener<String>() {
-            @Override
-            public void done(String s, BmobException e) {
-                if (e==null)
-                {
-                    Toast.makeText(context,"评论成功",Toast.LENGTH_SHORT).show();
-                    notifyDataSetChanged();
+        if (i==0)
+        {
+            comment.save(                                                                                                                                                                                                                           new SaveListener<String>() {
+                @Override
+                public void done(String s, BmobException e) {
+                    if (e==null)
+                    {
+                        Toast.makeText(context,"评论成功",Toast.LENGTH_SHORT).show();
+                        notifyDataSetChanged();
 
+                    }
+                    else {
+                        Toast.makeText(context,"网络原因，评论失败",Toast.LENGTH_SHORT).show();
+                        commentList.remove(commentList.size()-1);
+                        notifyDataSetChanged();
+                    }
                 }
-                else {
-                    Toast.makeText(context,"网络原因，评论失败",Toast.LENGTH_SHORT).show();
-                    commentList.remove(commentList.size()-1);
-                    notifyDataSetChanged();
-                }
-            }
-        });
+            });
+        }
+        notifyDataSetChanged();
+
 
 
     }

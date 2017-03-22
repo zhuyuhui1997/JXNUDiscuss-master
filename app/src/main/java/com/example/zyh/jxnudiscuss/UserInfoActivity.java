@@ -61,12 +61,12 @@ public class UserInfoActivity extends Activity implements View.OnClickListener{
                  public void done(BmobException e) {
                      if(e==null){
                          Log.i("bmob","更新成功");
-                         Toast.makeText(getBaseContext(), "更新成功", Toast.LENGTH_SHORT).show();
+                         Toast.makeText(UserInfoActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
                          Intent intent=new Intent(UserInfoActivity.this,MainActivity.class);
                          startActivity(intent);
                      }else{
                          Log.i("bmob","更新失败："+e.getMessage()+","+e.getErrorCode());
-                         Toast.makeText(getBaseContext(), "更新失败", Toast.LENGTH_SHORT).show();
+                         Toast.makeText(UserInfoActivity.this, "更新失败", Toast.LENGTH_SHORT).show();
                      }
                  }
              });

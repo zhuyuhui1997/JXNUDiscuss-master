@@ -59,6 +59,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
                     CommonUser commonUser = new CommonUser();
                     commonUser.setUsername(user_edit.getText().toString());
                     commonUser.setPassword(passwd_edit.getText().toString());
+                    commonUser.setSex("boy");
                     commonUser.signUp(new SaveListener<CommonUser>() {
 
                         @Override
@@ -71,7 +72,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
                         }
                     });
                 } else {
-                    Toast.makeText(this, "密码长度应大于7，请修改后再试一次", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "密码长度应大于7，请修改后再试一次", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -84,7 +85,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener {
                     @Override
                     public void done(CommonUser commonUser, BmobException e) {
                         if (e == null) {
-                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                             finish();
                             Intent  intent=new Intent(LoginActivity.this,MainActivity.class);
                             startActivity(intent);
